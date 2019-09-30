@@ -144,11 +144,6 @@ class GradientTreeBoosting:
 class RandomForest:
 	
 	def __init__(self, n_estimators=100, n_features=None, max_depth=1):
-		"""
-			n_features jumlah atribut yang dipertimbangkan ketika mencari best split pada setiap node
-			pada random forest default nya adalah log2(n_features)
-			log2
-		"""
 		self.n_estimators = n_estimators
 		self.n_features = n_features
 		self.max_depth = max_depth
@@ -164,10 +159,6 @@ class RandomForest:
 		
 		if self.n_features is None:
 			self.n_features = "log2"
-		
-		#if 1 in Y_train.unique() and -1 in Y_train.unique():
-		#	Y_train = Y_train.apply(lambda x:0 if x == -1 else 1)
-		#	self.transform_y = True
 		
 		for _ in range(self.n_estimators):
 			dt = DecisionTreeClassifier(max_depth=self.max_depth, max_features = self.n_features, criterion='entropy')
@@ -209,9 +200,6 @@ class RandomForest:
 		#self.classes_.take(np.argmax(proba, axis=1), axis=0)
 		o = self.class_order()
 		p = o.take(np.argmax(proba, axis=1), axis=0)		
-		#if self.transform_y :
-		#	p.apply(lambda x:0 if x == -1 else 1)
-		
 		return p
 		
 	def predict_voting(self, X_test):
@@ -222,5 +210,5 @@ class RandomForest:
 		modes, count = mode(tmp, axis=0)
 		o = self.class_order()
 		#o.take(modes[0], axis=0)
-		return o.take(modes[0], axis=0), tmp,o
+		return o.take(modes[0], axis=0)
 		
